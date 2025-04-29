@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator zadań</title>
+  <style>
+    :root {
+      --main-color: #4a90e2;
+      --bg-color: #f4f6f8;
+      --text-color: #333;
+      --border-radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      background-color: #fff;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--main-color);
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: var(--main-color);
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #357abd;
+    }
+
+    #wynik {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Kalkulator zadań</h2>
+
+    <label for="godziny">Ilość godzin:</label>
+    <input type="number" id="godziny" placeholder="np. 200">
+
+    <label for="zadania">Ilość zadań:</label>
+    <input type="number" id="zadania" placeholder="np. 50">
+
+    <button onclick="oblicz()">Oblicz</button>
+
+    <div id="wynik"></div>
+  </div>
+
+  <script>
+    // Załaduj dane z localStorage
+    window.onload = () => {
+      const savedGodziny = localStorage.getItem("godziny");
+      const savedZadania = localStorage.getItem("zadania");
+      const savedWynik = localStorage.getItem("wynik");
+
+      if (savedGodziny) document.getElementById("godziny").value = savedGodziny;
+      if (savedZadania) document.getElementById("zadania").value = savedZadania;
+      if (savedWynik) document.getElementById("wynik").innerText = savedWynik;
+    };
+
+    function oblicz() {
+      const godzinyInput = document.getElementById("godziny");
+      const zadaniaInput = document.getElementById("zadania");
+      const wynikDiv = document.getElementById("wynik");
+
+      const godziny = parseFloat(godzinyInput.value);
+      const zadania = parseFloat(zadaniaInput.value);
+
+      if (isNaN(godziny) || godziny <= 0 || isNaN(zadania)) {
+        wynikDiv.innerText = "Wprowadź poprawne dane.";
+        return;
+      }
+
+      const godzinyNa168 = godziny / 168;
+      const wynik = zadania / godzinyNa168;
+
+      const wynikTekst = `Wynik: ${wynik.toFixed(2)}`;
+
+      // Wyświetl i zapisz
+      wynikDiv.innerText = wynikTekst;
+      localStorage.setItem("godziny", godziny);
+      localStorage.setItem("zadania", zadania);
+      localStorage.setItem("wynik", wynikTekst);
+    }
+  </script>
+
+</body>
+</html>
